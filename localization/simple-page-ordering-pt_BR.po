@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Simple Page Ordering 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-29 16:13-0300\n"
-"PO-Revision-Date: 2014-05-29 16:20-0300\n"
+"POT-Creation-Date: 2014-05-29 16:39-0300\n"
+"PO-Revision-Date: 2014-05-29 16:41-0300\n"
 "Last-Translator: Felds Liscia <dev@felds.com.br>\n"
 "Language-Team: 10up <jake@get10up.com>\n"
 "Language: pt_BR\n"
@@ -16,14 +16,10 @@ msgstr ""
 "X-Generator: Poedit 1.6.5\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: ../\n"
-"X-Poedit-KeywordsList: __\n"
+"X-Poedit-KeywordsList: __;Description:\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: simple-page-ordering.php:17
-msgid "Sort by Order"
-msgstr "Organizar por ordem"
-
-#: simple-page-ordering.php:95
+#: simple-page-ordering.php:98
 msgid ""
 "To reposition an item, simply drag and drop the row by \"clicking and holding"
 "\" it anywhere (outside of the links and form controls) and moving it to its "
@@ -32,6 +28,20 @@ msgstr ""
 "Para alterar a posição de um elemento, simplesmente clique e segure em "
 "qualquer área fora dos links e outros controles, arraste e solte o conteúdo "
 "para sua nova posição."
+
+#: simple-page-ordering.php:278
+msgid "Sort by Order"
+msgstr "Organizar por ordem"
+
+#: simple-page-ordering.php:302
+msgid ""
+"Order your pages and hierarchical post types using drag and drop on the "
+"built in page list. For further instructions, open the \"Help\" tab on the "
+"Pages screen."
+msgstr ""
+"Ordene suas páginas e outros tipos de conteúdos hierárquicos usando arrastar-"
+"e-soltar na listagem de conteúdos. Para mais instruções, veja a Ajuda, no "
+"topo da lista de Páginas."
 
 #~ msgid "is a plug-in by"
 #~ msgstr "é um plug-in de"
