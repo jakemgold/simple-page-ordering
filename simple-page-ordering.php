@@ -41,6 +41,14 @@ class Simple_Page_Ordering {
 	public static function _add_actions() {
 		add_action( 'load-edit.php', array( __CLASS__, 'load_edit_screen' ) );
 		add_action( 'wp_ajax_simple_page_ordering', array( __CLASS__, 'ajax_simple_page_ordering' ) );
+		add_action( 'plugins_loaded', array( __CLASS__, 'load_textdomain' ) );
+	}
+
+	/**
+	 * Loads the plugin textdomain
+	 */
+	public static function load_textdomain() {
+		load_plugin_textdomain( 'simple-page-ordering', false, dirname( plugin_basename( __FILE__ ) ) . '/localization/' ); 
 	}
 
 	/**
@@ -265,7 +273,8 @@ class Simple_Page_Ordering {
 		$class = ( get_query_var('orderby') == 'menu_order title' ) ? 'current' : '';
 		$query_string = remove_query_arg(array( 'orderby', 'order' ));
 		$query_string = add_query_arg( 'orderby', urlencode('menu_order title'), $query_string );
-		$views['byorder'] = '<a href="'. $query_string . '" class="' . $class . '">Sort by Order</a>';
+		$views['byorder'] = sprintf('<a href="%s" class="%s">%s</a>', $query_string, $class, __("Sort by Order", 'simple-page-ordering'));
+			
 		return $views;
 	}
 
