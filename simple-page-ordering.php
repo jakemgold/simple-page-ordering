@@ -1,5 +1,5 @@
 <?php
-/**
+/*
 Plugin Name: Simple Page Ordering
 Plugin URI: http://10up.com/plugins/simple-page-ordering-wordpress/
 Description: Order your pages and hierarchical post types using drag and drop on the built in page list. For further instructions, open the "Help" tab on the Pages screen.
@@ -7,7 +7,9 @@ Version: 2.2
 Author: Jake Goldman, 10up
 Author URI: http://10up.com
 License: GPLv2 or later
- */
+Text Domain: simple-page-ordering
+Domain Path: /localization/
+*/
 
 if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
@@ -41,6 +43,14 @@ class Simple_Page_Ordering {
 	public static function _add_actions() {
 		add_action( 'load-edit.php', array( __CLASS__, 'load_edit_screen' ) );
 		add_action( 'wp_ajax_simple_page_ordering', array( __CLASS__, 'ajax_simple_page_ordering' ) );
+		add_action( 'plugins_loaded', array( __CLASS__, 'load_textdomain' ) );
+	}
+
+	/**
+	 * Loads the plugin textdomain
+	 */
+	public static function load_textdomain() {
+		load_plugin_textdomain( 'simple-page-ordering', false, dirname( plugin_basename( __FILE__ ) ) . '/localization/' ); 
 	}
 
 	/**
@@ -265,7 +275,8 @@ class Simple_Page_Ordering {
 		$class = ( get_query_var('orderby') == 'menu_order title' ) ? 'current' : '';
 		$query_string = remove_query_arg(array( 'orderby', 'order' ));
 		$query_string = add_query_arg( 'orderby', urlencode('menu_order title'), $query_string );
-		$views['byorder'] = '<a href="'. $query_string . '" class="' . $class . '">Sort by Order</a>';
+		$views['byorder'] = sprintf('<a href="%s" class="%s">%s</a>', $query_string, $class, __("Sort by Order", 'simple-page-ordering'));
+			
 		return $views;
 	}
 
@@ -285,3 +296,9 @@ class Simple_Page_Ordering {
 Simple_Page_Ordering::get_instance();
 
 endif;
+
+// dummy, to be used by poedit
+if (false) {
+	// Plugin description
+	__('Order your pages and hierarchical post types using drag and drop on the built in page list. For further instructions, open the "Help" tab on the Pages screen.', 'simple-page-ordering');
+}
