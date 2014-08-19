@@ -17,7 +17,7 @@
 	outline: 1px solid #e1e1e1;
 }
 .spo-updating-row .check-column {
-	background: url('../../../wp-admin/images/spinner.gif') 11px 11px no-repeat;
+	background: url('../../../wp-admin/images/spinner.gif') 10px 9px no-repeat;
 }
 @media print,
 (-o-min-device-pixel-ratio: 5/4),
