@@ -3,7 +3,7 @@
 Plugin Name: Simple Page Ordering
 Plugin URI: http://10up.com/plugins/simple-page-ordering-wordpress/
 Description: Order your pages and hierarchical post types using drag and drop on the built in page list. For further instructions, open the "Help" tab on the Pages screen.
-Version: 2.2.2
+Version: 2.2.3
 Author: Jake Goldman, 10up
 Author URI: http://10up.com
 License: GPLv2 or later
@@ -80,7 +80,8 @@ class Simple_Page_Ordering {
 	 * when we load up our posts query, if we're actually sorting by menu order, initialize sorting scripts
 	 */
 	public static function wp() {
-		if ( 0 === strpos( get_query_var('orderby'), 'menu_order' ) ) {
+		$orderby = get_query_var('orderby');
+		if ( ( is_string( $orderby ) && 0 === strpos( $orderby, 'menu_order' ) ) || ( isset( $orderby['menu_order'] ) && $orderby['menu_order'] == 'ASC' ) ) {
 			$script_name = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? 'simple-page-ordering.dev.js' : 'simple-page-ordering.js';
 			wp_enqueue_script( 'simple-page-ordering', plugins_url( $script_name, __FILE__ ), array('jquery-ui-sortable'), '2.1', true );
 			wp_enqueue_style( 'simple-page-ordering', plugins_url( 'simple-page-ordering.css', __FILE__ ) );
@@ -120,6 +121,8 @@ class Simple_Page_Ordering {
 			error_reporting( 0 );
 		}
 
+		global $wp_version;
+
 		$previd = empty( $_POST['previd'] ) ? false : (int) $_POST['previd'];
 		$nextid = empty( $_POST['nextid'] ) ? false : (int) $_POST['nextid'];
 		$start = empty( $_POST['start'] ) ? 1 : (int) $_POST['start'];
@@ -156,20 +159,24 @@ class Simple_Page_Ordering {
 			'show_in_admin_all_list' => true,
 		));
 
-		$siblings = new WP_Query(array(
+		$siblings_query = array(
 			'depth'						=> 1,
 			'posts_per_page'			=> $max_sortable_posts,
 			'post_type' 				=> $post->post_type,
 			'post_status' 				=> $post_stati,
 			'post_parent' 				=> $parent_id,
-			'orderby' 					=> 'menu_order title',
-			'order' 					=> 'ASC',
+			'orderby' 					=> array( 'menu_order' => 'ASC', 'title' => 'ASC' ),
 			'post__not_in'				=> $excluded,
 			'update_post_term_cache'	=> false,
 			'update_post_meta_cache'	=> false,
 			'suppress_filters' 			=> true,
 			'ignore_sticky_posts'		=> true,
-		)); // fetch all the siblings (relative ordering)
+		);
+		if ( version_compare( $wp_version, '4.0', '<' ) ) {
+			$siblings_query['orderby'] = 'menu_order title';
+			$siblings_query['order'] = 'ASC';
+		}
+		$siblings = new WP_Query( $siblings_query ); // fetch all the siblings (relative ordering)
 
 		// don't waste overhead of revisions on a menu order change (especially since they can't *all* be rolled back at once)
 		remove_action( 'pre_post_update', 'wp_save_post_revision' );
@@ -274,8 +281,11 @@ class Simple_Page_Ordering {
 	 */
 	public static function sort_by_order_link( $views ) {
 		$class = ( get_query_var('orderby') == 'menu_order title' ) ? 'current' : '';
-		$query_string = esc_url( remove_query_arg(array( 'orderby', 'order' )) );
-		$query_string = add_query_arg( 'orderby', urlencode('menu_order title'), $query_string );
+		$query_string = esc_url( remove_query_arg( array( 'orderby', 'order' ) ) );
+		if ( ! is_post_type_hierarchical( get_post_type() ) ) {
+			$query_string = add_query_arg( 'orderby', urlencode( 'menu_order title' ), $query_string );
+			$query_string = add_query_arg( 'order', 'asc', $query_string );
+		}
 		$views['byorder'] = sprintf('<a href="%s" class="%s">%s</a>', $query_string, $class, __("Sort by Order", 'simple-page-ordering'));
 			
 		return $views;

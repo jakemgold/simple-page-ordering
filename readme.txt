@@ -3,8 +3,8 @@ Contributors: jakemgold, 10up, thinkoomph
 Donate link: http://10up.com/plugins/simple-page-ordering-wordpress/
 Tags: order, re-order, ordering, pages, page, manage, menu_order, hierarchical, ajax, drag-and-drop, admin
 Requires at least: 3.8
-Tested up to: 3.9.2
-Stable tag: 2.2.2
+Tested up to: 4.0
+Stable tag: 2.2.3
 
 Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.
 
@@ -76,6 +76,9 @@ This feature is already built into WordPress natively, but a bit tucked away. If
 
 
 == Changelog ==
+
+= 2.2.3 =
+* Fixed ordering in WordPress 4.0 following core changes to ORDER BY in WP_Query
 
 = 2.2.2 =
 * Column widths no longer change when dragging a row (partial props griffinjt)
