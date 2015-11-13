@@ -101,6 +101,10 @@ class Simple_Page_Ordering {
 	}
 
 	public static function ajax_simple_page_ordering() {
+		
+		// Don't mess with Texas
+		define( DOING_AUTOSAVE, true );
+
 		// check and make sure we have what we need
 		if ( empty( $_POST['id'] ) || ( !isset( $_POST['previd'] ) && !isset( $_POST['nextid'] ) ) ) {
 			die(-1);
