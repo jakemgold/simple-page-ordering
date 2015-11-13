@@ -101,9 +101,6 @@ class Simple_Page_Ordering {
 	}
 
 	public static function ajax_simple_page_ordering() {
-		
-		// Don't mess with Texas
-		define( DOING_AUTOSAVE, true );
 
 		// check and make sure we have what we need
 		if ( empty( $_POST['id'] ) || ( !isset( $_POST['previd'] ) && !isset( $_POST['nextid'] ) ) ) {
@@ -125,6 +122,9 @@ class Simple_Page_Ordering {
 			error_reporting( 0 );
 		}
 
+		// Don't mess with Texas or post meta displayed in columns
+		define( DOING_AUTOSAVE, true );
+		
 		global $wp_version;
 
 		$previd = empty( $_POST['previd'] ) ? false : (int) $_POST['previd'];
